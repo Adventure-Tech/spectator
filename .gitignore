@@ -10,3 +10,4 @@ composer.lock
 /phpunit.xml.bak
 .idea
 .prettierrc.yaml
+._ide_helpers.php
