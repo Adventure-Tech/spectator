@@ -260,7 +260,7 @@ abstract class SchemaValidationException extends \Exception implements Exception
 
                         // create entries for all object properties
                         $indent_level = ++$indent_level;
-                        foreach ($schema['properties'] as $key => $next_schema) {
+                        foreach ($schema['properties'] ?? [] as $key => $next_schema) {
                             if (isset($schema['required'])) {
                                 $schema_map = array_merge($schema_map, self::formatSchema($next_schema, $location_current, $key, $schema['required'], $indent_level));
                             } else {
@@ -274,8 +274,10 @@ abstract class SchemaValidationException extends \Exception implements Exception
                         $schema_map[$location_current] = self::indentedDisplayString($display_string, $indent_level);
 
                         // create entry for array's items
-                        $next_schema = $schema['items'];
-                        $schema_map = array_merge($schema_map, self::formatSchema($next_schema, $location_current.'/items', '', [], ++$indent_level));
+                        if (isset($schema['items'])) {
+                            $next_schema = $schema['items'];
+                            $schema_map = array_merge($schema_map, self::formatSchema($next_schema, $location_current.'/items', '', [], ++$indent_level));
+                        }
 
                         break;
                     default:
